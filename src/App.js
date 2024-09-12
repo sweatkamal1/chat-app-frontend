@@ -9,7 +9,7 @@ import io from "socket.io-client";
 // import { setSocket } from './redux/socketSlice';
 import { setSocket } from "./redux/socketSlice"
 import { setOnlineUsers } from './redux/userSlice';
-import { BASE_URL } from '.';
+// import { BASE_URL } from '.';
 
 const router = createBrowserRouter([
   {
