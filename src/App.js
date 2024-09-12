@@ -34,7 +34,7 @@ function App() {
 
   useEffect(()=>{
     if(authUser){
-      const socketio = io(`${BASE_URL}`, {
+      const socketio = io(`${REACT_APP_BASE_URL}`, {
           query:{
             userId:authUser._id
           }
