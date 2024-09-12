@@ -4,7 +4,7 @@ import toast from "react-hot-toast"
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setAuthUser } from '../redux/userSlice';
-import { BASE_URL } from '..';
+// import { BASE_URL } from '..';
 
 const Login = () => {
   const [user, setUser] = useState({
