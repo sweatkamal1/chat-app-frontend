@@ -1,5 +1,3 @@
-// import { MyComponent } from './MyComponent';
-
 import './App.css';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import HomePage from './components/HomePage';
