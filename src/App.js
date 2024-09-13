@@ -62,7 +62,7 @@ const dispatch = useDispatch();
 useEffect(() => {
   if (authUser) {
     const socketio = io(`${process.env.REACT_APP_BASE_URL}`, {
-      transports: ['websocket', 'polling'],  // added transport method
+      transports: ['websocket', 'polling'],  
       query: {
         userId: authUser._id
       }
