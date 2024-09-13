@@ -1,27 +1,36 @@
 import React, { useEffect } from 'react';
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setOtherUsers } from '../redux/userSlice';
-// import { BASE_URL } from '..';
 
 const useGetOtherUsers = () => {
     const dispatch = useDispatch();
+    const { authUser } = useSelector(store => store.user);  // Assuming you store user info including token
 
     useEffect(() => {
         const fetchOtherUsers = async () => {
             try {
                 axios.defaults.withCredentials = true;
-                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}api/v1/user`);
-                // store
-                console.log("other users -> ",res);
+                
+                // Add token to Authorization header if it exists
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${authUser?.token}`,  // assuming token is part of authUser
+                    },
+                };
+                
+                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}api/v1/user`, config);
+                console.log("other users -> ", res);
                 dispatch(setOtherUsers(res.data));
             } catch (error) {
-                console.log(error);
+                console.log("Error fetching users:", error);
             }
         }
-        fetchOtherUsers();
-    }, [])
+        if (authUser) {
+            fetchOtherUsers();
+        }
+    }, [authUser, dispatch]);
 
 }
 
-export default useGetOtherUsers
+export default useGetOtherUsers;
