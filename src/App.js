@@ -1,15 +1,14 @@
+import Signup from './components/Signup';
 import './App.css';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import HomePage from './components/HomePage';
-import Signup from './components/Signup';
-import  Login from './components/Login';
+import Login from './components/Login';
 import { useEffect, useState } from 'react';
 import {useSelector,useDispatch} from "react-redux";
 import io from "socket.io-client";
-// import { setSocket } from './redux/socketSlice';
-import { setSocket } from "./redux/socketSlice"
+import { setSocket } from './redux/socketSlice';
 import { setOnlineUsers } from './redux/userSlice';
-// import { BASE_URL } from '.';
+import { BASE_URL } from '.';
 
 const router = createBrowserRouter([
   {
@@ -28,64 +27,31 @@ const router = createBrowserRouter([
 ])
 
 function App() { 
-  // const {authUser} = useSelector(store=>store.user);
-  // const {socket} = useSelector(store=>store.socket);
-  // const dispatch = useDispatch();
+  const {authUser} = useSelector(store=>store.user);
+  const {socket} = useSelector(store=>store.socket);
+  const dispatch = useDispatch();
 
-  // useEffect(()=>{
-  //   if(authUser){
-  //     const socketio = io(`${process.env.REACT_APP_BASE_URL}`, {
-  //         query:{
-  //           userId:authUser._id
-  //         }
-  //     });
-  //     dispatch(setSocket(socketio));
+  useEffect(()=>{
+    if(authUser){
+      const socketio = io(`${process.env.REACT_APP_BASE_URL}`, {
+          query:{
+            userId:authUser._id
+          }
+      });
+      dispatch(setSocket(socketio));
 
-  //     socketio?.on('getOnlineUsers', (onlineUsers)=>{
-  //       dispatch(setOnlineUsers(onlineUsers))
-  //     });
-  //     return () => socketio.close();
-  //   }else{
-  //     if(socket){
-  //       socket.close();
-  //       dispatch(setSocket(null));
-  //     }
-  //   }
-
-  // },[authUser]);
-
-
-  const {authUser} = useSelector(store => store.user);
-const {socket} = useSelector(store => store.socket);
-const dispatch = useDispatch();
-
-useEffect(() => {
-  if (authUser) {
-    const socketio = io(`${process.env.REACT_APP_BASE_URL}`, {
-      transports: ['websocket', 'polling'],  
-      query: {
-        userId: authUser._id
+      socketio?.on('getOnlineUsers', (onlineUsers)=>{
+        dispatch(setOnlineUsers(onlineUsers))
+      });
+      return () => socketio.close();
+    }else{
+      if(socket){
+        socket.close();
+        dispatch(setSocket(null));
       }
-    });
-    dispatch(setSocket(socketio));
-
-    socketio?.on('getOnlineUsers', (onlineUsers) => {
-      dispatch(setOnlineUsers(onlineUsers));
-    });
-
-    return () => {
-      if (socketio) {
-        socketio.close();
-      }
-    };
-  } else {
-    if (socket) {
-      socket.close();
-      dispatch(setSocket(null));
     }
-  }
-}, [authUser]);
 
+  },[authUser]);
 
   return (
     <div className="p-4 h-screen flex items-center justify-center">
