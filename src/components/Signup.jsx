@@ -29,15 +29,15 @@ const Signup = () => {
     }
 
     try {
+      // Axios request with increased timeout (15 seconds)
       const res = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/v1/user/register`, user, {
         headers: {
           'Content-Type': 'application/json',
         },
         withCredentials: true,
-        timeout:  15000,  // 5-second timeout for the request
+        timeout: 15000,  // Increased timeout to 15 seconds
       });
 
-      // Check if signup is successful
       if (res.data.success) {
         toast.success(res.data.message || 'Signup successful!');
         navigate('/login');
