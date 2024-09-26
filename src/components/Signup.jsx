@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import toast from "react-hot-toast";
+import { BASE_URL } from '..';
+
 
 const Signup = () => {
   const [user, setUser] = useState({
@@ -12,51 +14,34 @@ const Signup = () => {
     gender: "",
   });
   const navigate = useNavigate();
-
   const handleCheckbox = (gender) => {
     setUser({ ...user, gender });
   }
-
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    
-    // Basic validation
-    if (!user.fullName || !user.username || !user.password || !user.confirmPassword) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-    
-    if (user.password !== user.confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
     try {
-      const res = await axios.post(`${process.env.REACT_APP_BASE_URL}api/v1/user/register`, user, {
+      const res = await axios.post(`${BASE_URL}/api/v1/user/register`, user, {
         headers: {
           'Content-Type': 'application/json'
         },
-        withCredentials: true,
-        timeout: 5000 // Set timeout to 5000 milliseconds (5 seconds)
+        withCredentials: true
       });
-
       if (res.data.success) {
-        toast.success(res.data.message);
         navigate("/login");
-        setUser({
-          fullName: "",
-          username: "",
-          password: "",
-          confirmPassword: "",
-          gender: "",
-        });
+        toast.success(res.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || "An error occurred.");
+      toast.error(error.response.data.message);
       console.log(error);
     }
+    setUser({
+      fullName: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
+      gender: "",
+    })
   }
-
   return (
     <div className="min-w-96 mx-auto">
       <div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border border-gray-100'>
@@ -110,23 +95,25 @@ const Signup = () => {
             <div className='flex items-center'>
               <p>Male</p>
               <input
-                type="radio"
+                type="checkbox"
                 checked={user.gender === "male"}
                 onChange={() => handleCheckbox("male")}
-                className="radio mx-2" />
+                defaultChecked
+                className="checkbox mx-2" />
             </div>
             <div className='flex items-center'>
               <p>Female</p>
               <input
-                type="radio"
+                type="checkbox"
                 checked={user.gender === "female"}
                 onChange={() => handleCheckbox("female")}
-                className="radio mx-2" />
+                defaultChecked
+                className="checkbox mx-2" />
             </div>
           </div>
           <p className='text-center my-2'>Already have an account? <Link to="/login"> login </Link></p>
           <div>
-            <button type='submit' className='btn btn-block btn-sm mt-2 border border-slate-700'>Signup</button>
+            <button type='submit' className='btn btn-block btn-sm mt-2 border border-slate-700'>Singup</button>
           </div>
         </form>
       </div>
@@ -134,4 +121,4 @@ const Signup = () => {
   )
 }
 
-export default Signup;
+export default Signup
