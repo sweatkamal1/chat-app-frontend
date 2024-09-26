@@ -33,7 +33,7 @@ function App() {
 
   useEffect(()=>{
     if(authUser){
-      const socketio = io(`${process.env.REACT_APP_BASE_URL}`, {
+      const socketio = io("https://chat-app-backend-weld-beta.vercel.app/", {
           query:{
             userId:authUser._id
           }
