@@ -19,7 +19,7 @@ const useGetOtherUsers = () => {
                     },
                 };
                 
-                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}api/v1/user`, config);
+                const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/user`, config);
                 console.log("other users -> ", res);
                 dispatch(setOtherUsers(res.data));
             } catch (error) {
