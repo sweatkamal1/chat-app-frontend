@@ -34,7 +34,7 @@ const Signup = () => {
           'Content-Type': 'application/json',
         },
         withCredentials: true,
-        timeout:  10000,  // 5-second timeout for the request
+        timeout:  15000,  // 5-second timeout for the request
       });
 
       // Check if signup is successful
