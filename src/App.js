@@ -100,7 +100,8 @@ function App() {
       const socketio = io("https://chat-app-backend-weld-beta.vercel.app/", {
         query: {
           userId: authUser._id
-        }
+        },
+        transports: ['websocket', 'polling'] // Ensuring both transports are enabled
       });
 
       // Dispatch socket to Redux store
@@ -115,11 +116,11 @@ function App() {
       });
 
       return () => {
-        socketio.close(); // Cleanup on unmount
+        socketio.disconnect(); // More appropriate cleanup
       };
     } else {
       if (socket) {
-        socket.close();
+        socket.disconnect(); // Using disconnect instead of close
         dispatch(setSocket(null));
       }
     }
