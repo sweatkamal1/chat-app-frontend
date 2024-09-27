@@ -43,29 +43,29 @@ import { setOtherUsers } from '../redux/userSlice';
 
 const useGetOtherUsers = () => {
     const dispatch = useDispatch();
-    const { authUser } = useSelector(store => store.user);
+    const { authUser } = useSelector(store => store.user); 
 
     useEffect(() => {
         const fetchOtherUsers = async () => {
-            if (!authUser) return; // Check if authUser is available
-
             try {
+                axios.defaults.withCredentials = true;
+
                 const config = {
                     headers: {
-                        Authorization: `Bearer ${authUser.token}`, // assuming token is part of authUser
+                        Authorization: `Bearer ${authUser?.token}`,
                     },
-                    withCredentials: true, // set this here for each request
                 };
 
                 const res = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/user`, config);
-                console.log("Other users -> ", res.data);
+                console.log("other users -> ", res);
                 dispatch(setOtherUsers(res.data));
             } catch (error) {
-                console.error("Error fetching users:", error.response?.data || error.message);
+                console.log("Error fetching users:", error);
             }
-        };
-
-        fetchOtherUsers();
+        }
+        if (authUser) {
+            fetchOtherUsers();
+        }
     }, [authUser, dispatch]);
 }
 
